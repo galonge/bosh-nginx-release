@@ -3,18 +3,18 @@ set -e -x
 echo "Beginning ngnix build"
 
 echo "Extracting pcre..."
-tar xzvf nginx-blobs/pcre-8.40.tar.gz
+tar xzvf pcre-8.40.tar.gz
 
 echo "Extracking zlib module"
-tar -xzvf nginx-blobs/zlib-1.2.11.tar.gz
+tar -xzvf zlib-1.2.11.tar.gz
 
 
 echo "Extracting openssl"
-tar -xzvf nginx-blobs/openssl-1.1.0f.tar.gz
+tar -xzvf openssl-1.1.0f.tar.gz
 
 
 echo "Extracting nginx"
-tar -xzvf nginx-blobs/nginx-1.13.1.tar.gz
+tar -xzvf nginx-1.13.1.tar.gz
 
 
 pushd nginx-1.13.1
