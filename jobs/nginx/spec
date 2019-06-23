@@ -8,6 +8,7 @@ templates:
     post-start.erb: bin/post-start
     ssl_key.erb: etc/ssl.key.pem
     ssl_chained_cert.erb: etc/ssl_chained.crt.pem
+    users_list.erb: conf/htpasswd
 
 packages:
 - nginx
@@ -47,6 +48,9 @@ properties:
     description: |
       The SSL key, can be empty, should be in PEM format. Its location is
       /var/vcap/jobs/nginx/etc/ssl.key.pem
+  users_list:
+    default: ''
+    description: 'htpasswd file in the form user:password'
   ssl_chained_cert:
     default: ''
     description: |

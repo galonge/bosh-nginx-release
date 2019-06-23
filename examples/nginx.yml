@@ -46,6 +46,11 @@ instance_groups:
             error_log /var/vcap/sys/log/nginx/example.com-error.log;
             root /var/vcap/data/nginx/document_root;
             index index.shtml;
+
+            location / {
+                auth_basic "Restricted Area. Please Login";
+                auth_basic_user_file /var/vcap/jobs/nginx/conf/htpasswd;
+            }
           }
         }
       pre_start: |
@@ -65,6 +70,9 @@ instance_groups:
             </body></html>
         EOF
         fi
+      #  admin:admin
+      users_list: |
+      admin:$apr1$7slUwyza$MhQ1tv3QTjNu2Y/DoM6ln0
 update:
   canaries: 1
   max_in_flight: 1
