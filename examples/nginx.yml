@@ -11,7 +11,7 @@ stemcells:
   version: latest
 
 instance_groups:
-- name: nginx
+- name: nginx-deployment
   instances: 1
   azs: [ z1 ]
   vm_type: default
@@ -22,7 +22,7 @@ instance_groups:
     # static_ips: [ 10.244.0.34 ]
   jobs:
   - name: nginx
-    release: nginx
+    release: nginx-deployment
     properties:
       nginx_conf: |
         user nobody vcap; # group vcap can read most directories
@@ -55,7 +55,7 @@ instance_groups:
           mkdir -p $NGINX_DIR
           cd $NGINX_DIR
           cat > index.shtml <<EOF
-            <html><head><title>My BOSH Release on Virtualbox IPv6</title>
+            <html><head><title>My new BOSH Release on Virtualbox IPv6</title>
             </head><body>
             <h2>Welcome to my BOSH's nginx Release</h2>
             <h2>
