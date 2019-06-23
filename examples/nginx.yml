@@ -71,7 +71,7 @@ instance_groups:
         EOF
         fi
       #  admin:admin
-      users_list: |
+      user_file: |
       admin:$apr1$7slUwyza$MhQ1tv3QTjNu2Y/DoM6ln0
 update:
   canaries: 1
