@@ -1,7 +1,7 @@
 ---
 name: nginx
 templates:
-    run.sh: bin/ctl
+    ctl.sh: bin/ctl
     nginx.conf.erb: etc/nginx.conf
     drain.erb: bin/drain
     pre-start.erb: bin/pre-start
