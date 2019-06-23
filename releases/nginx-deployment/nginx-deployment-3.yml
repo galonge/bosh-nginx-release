@@ -1,0 +1,17 @@
+name: nginx-deployment
+version: "3"
+commit_hash: 1c3a19e
+uncommitted_changes: true
+jobs:
+- name: nginx
+  version: 35ad9be9eb70db210919b073bd6c49ec499cf9c249a9fa25e9fa1546ac301969
+  fingerprint: 35ad9be9eb70db210919b073bd6c49ec499cf9c249a9fa25e9fa1546ac301969
+  sha1: sha256:8c92f02bad60a2b5f235061038810d037edbd8b7c21714bdd9271cd5c5f60046
+  packages:
+  - nginx
+packages:
+- name: nginx
+  version: 587519cc3c7076aedd4859bd718f8b63793b993ce565da02912ed145415da0bf
+  fingerprint: 587519cc3c7076aedd4859bd718f8b63793b993ce565da02912ed145415da0bf
+  sha1: sha256:ff58e3e683013ac012232279b64071245bd54e3cc652deb863fed19611de058a
+  dependencies: []
