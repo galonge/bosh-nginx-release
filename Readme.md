@@ -1,121 +1,65 @@
 # BOSH nginx release
 
 
-### 0. Quick Start
+### 0. Setup
 
-#### 0.0 Quick Start: Pre-requisites
+#### 0.0 Pre-requisites
 
-You must have a BOSH Director and have uploaded stemcells to it. Our examples assume the [BOSH CLI v2](https://github.com/cloudfoundry/bosh-cli).
+To use this nginx release, you should have a Bosh Director setup and a stemcell uploaded to it.
+This release has been tested on an ubuntu-xenial stemcell.
 
-Follow the instructions to install BOSH Lite: <https://bosh.io/docs/bosh-lite>;
-upload the Cloud Config, set the routes, but no need to deploy Zookeeper.
+To install a bosh director, follow the instructions here. a virtual box environment should do: <https://bosh.io/docs/bosh-lite>;
 
-Upload Ubuntu stemcell
-
-```bash
-bosh -e vbox us https://s3.amazonaws.com/bosh-core-stemcells/warden/bosh-stemcell-3468-warden-boshlite-ubuntu-trusty-go_agent.tgz
-```
-
-Clone the nginx repository:
+Upload Ubuntu Xenial stemcell to Bosh
 
 ```bash
-cd ~/workspace
-git clone https://github.com/cloudfoundry-community/nginx-release.git
-cd nginx-release
+bosh -e {{env-alias}} upload-stemcell --sha1 674cd3c1e64d8c51e62770697a63c07ca04e9bbd \
+  https://bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-xenial-go_agent?v=315.45
 ```
 
-#### 0.1 Quick Start: Upload release to BOSH Director
+#### 0.1 Uploading the release to Bosh Director
+
+There are two ways this release can be added to your bosh director.
+
+1. From Repo Release Files (Clone Repo)
+  ```bash
+    git clone https://github.com/wayneskillz/bosh-nginx-release.git
+    cd bosh-nginx-release
+    bosh upload-release
+  ```
+2. From Release Tarball (Located in the tarball directory)
+  ```bash
+    bosh -e {{env_alias}} upload-release https://github.com/wayneskillz/bosh-nginx-release/tarball/nginx-1.13.1.tar.gz
+  ```
+
+#### 0.2 Deploying the Nginx release
+
+Assuming you are in the bosh nginx directory cloned earlier, i.e. in the bosh-nginx-release directory:
 
 ```bash
-bosh -e vbox ur https://github.com/cloudfoundry-community/nginx-release/releases/download/1.13.12/nginx-release-1.13.12.tgz
+bosh -e {{env_alias}} -d nginx-deployment deploy examples/nginx-deployment.yml
 ```
 
-#### 0.2 Quick Start: deploy
+#### 0.3 Testing
 
-(This assumes you're in the `~/workspace/nginx` directory cloned in a previous step):
+Visit <http://10.244.0.2/>; on your browser and you should see the nginx homescreen with a popup to authenticate:
+
+Default username and password is `admin`
+
+After entering this, you should see the default nginx homepage.
+
+
+
+## Additional Notes
+
+#### 1. Locate your vm ip
+
+* In the event that this release was not deployed on a fresh virtualbox vm, type the following command to view the ip address for the deployment.
 
 ```bash
-bosh -e vbox -d nginx deploy manifests/nginx-lite.yml
+bosh -e {{env_alias}} -d nginx-deployment vms
 ```
 
-#### 0.3 Quick Start: test
+Now open your browser at that ip to test.
 
-Browse to <http://10.244.0.34/>; you should see the following:
-
-![nginx_release_welcome](https://user-images.githubusercontent.com/1020675/27837760-14599acc-609b-11e7-8e1a-eb4d305be2b7.png)
-
-### 1. Post-deployment HTML content
-
-We find it effective to set the
-[`pre_start`]((https://bosh.io/docs/pre-start.html)) property to populate the
-webserver content. See
-[here](https://github.com/cunnie/deployments/blob/d47af699bf11c4b168abfb9d5119ecc6dfddc06f/etc/nginx.yml#L53-L67)
-for an example (sslip.io).
-
-Alternatively, you may manually add the HTML content *after* successful deployment.
-
-We recommend installing HTML content on the persistent disk, e.g.
-`/var/vcap/store/nginx/document_root/` so that subsequent redeploys
-do not require re-installation of HTML content, i.e. the
-`nginx.conf` should have the following directive:
-
-```
-server {
-  root /var/vcap/store/nginx/www/document_root;
-```
-
-## Notes
-
-#### 1. nginx Job Properties
-
-* `nginx_conf`: *Required*. This contains the contents of nginx's configuration
-  file, nginx.conf. Here is the beginning from a sample configuration:
-  ```yaml
-    nginx_conf: |
-      worker_processes  1;
-      error_log /var/vcap/sys/log/nginx/error.log   info;
-  ```
-
-* `ssl_key`: *Optional*, defaults to ''. This contains the contents of the
-  SSL key in PEM-encoded format. This is required if deploying an HTTPS webserver.
-  The key is deployed to the path `/var/vcap/jobs/nginx/etc/ssl.key.pem` and
-  requires the following line in the `nginx_conf`'s *server* definition:
-
-  ```
-  ssl_certificate_key /var/vcap/jobs/nginx/etc/ssl.key.pem;
-  ```
-
-  Here is the beginning from a sample configuration:
-
-  ```yaml
-  ssl_key: |
-    -----BEGIN RSA PRIVATE KEY-----
-    MIIJKQIBAAKCAgEAyv4in6scMw3OkBlr++1OooLuZQKftmwGIO8puOj6lSH4H1LI
-  ```
-
-* `ssl_chained_cert`: *Optional*, defaults to ''. This contains the contents of the
-  SSL certificate in PEM-encoded format. This file will most likely contain
-  several chained certificates.  The certificate for the server should appear
-  at the top, followed by the intermediate certificate.  This property is
-  required if deploying an HTTPS webserver.  The certificate is deployed to the
-  path `/var/vcap/jobs/nginx/etc/ssl_chained.crt.pem` and requires the
-  following line in the `nginx_conf` *server* definition:
-
-  ```
-  ssl_certificate     /var/vcap/jobs/nginx/etc/ssl_chained.crt.pem;
-  ```
-
-  Here is the beginning from a sample configuration:
-
-  ```yaml
-  ssl_chained_cert: |
-    -----BEGIN CERTIFICATE-----
-    MIIGSjCCBTKgAwIBAgIRAOxg+vyhygau6bc2SAooL6owDQYJKoZIhvcNAQELBQAw
-  ```
-
-* `pre_start`: *Optional*, contains a pre-start script to execute,
-useful for populating web content.
-
-## Developer Notes
-
-Developer notes, such as building and test a release, are available [here](docs/DEVELOPER.md).
+*Note* Replace {{env_alias}} with the alias name of your bosh director.
