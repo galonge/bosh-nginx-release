@@ -1,9 +1,9 @@
 # BOSH nginx release
 
 
-### 0. Setup
+### Setup
 
-#### 0.0 Pre-requisites
+#### Pre-requisites
 
 To use this nginx release, you should have a Bosh Director setup and a stemcell uploaded to it.
 This release has been tested on an ubuntu-xenial stemcell.
@@ -17,7 +17,7 @@ bosh -e {{env-alias}} upload-stemcell --sha1 674cd3c1e64d8c51e62770697a63c07ca04
   https://bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-xenial-go_agent?v=315.45
 ```
 
-#### 0.1 Uploading the release to Bosh Director
+####  Uploading the release to Bosh Director
 
 There are two ways this release can be added to your bosh director.
 
@@ -32,7 +32,7 @@ There are two ways this release can be added to your bosh director.
     bosh -e {{env_alias}} upload-release https://github.com/wayneskillz/bosh-nginx-release/tarball/nginx-1.13.1.tar.gz
   ```
 
-#### 0.2 Deploying the Nginx release
+#### Deploying the Nginx release
 
 Assuming you are in the bosh nginx directory cloned earlier, i.e. in the bosh-nginx-release directory:
 
@@ -40,7 +40,7 @@ Assuming you are in the bosh nginx directory cloned earlier, i.e. in the bosh-ng
 bosh -e {{env_alias}} -d nginx-deployment deploy examples/nginx-deployment.yml
 ```
 
-#### 0.3 Testing
+#### Testing
 
 Visit <http://10.244.0.2/>; on your browser and you should see the nginx homescreen with a popup to authenticate:
 
