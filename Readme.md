@@ -29,7 +29,7 @@ There are two ways this release can be added to your bosh director.
   ```
 2. From Release Tarball (Located in the tarball directory)
   ```bash
-    bosh -e {{env_alias}} upload-release https://github.com/wayneskillz/bosh-nginx-release/tarball/nginx-1.13.1.tar.gz
+    bosh -e {{env_alias}} upload-release https://github.com/wayneskillz/bosh-nginx-release/tarball/nginx-deployment-1.13.1.tar.gz
   ```
 
 #### Deploying the Nginx release
@@ -42,7 +42,7 @@ bosh -e {{env_alias}} -d nginx-deployment deploy examples/nginx-deployment.yml
 
 #### Testing
 
-Visit <http://10.244.0.2/>; on your browser and you should see the nginx homescreen with a popup to authenticate:
+Visit <http://10.244.0.2/> on your browser and you should see the nginx homescreen with a popup to authenticate:
 
 Default username and password is `admin`
 
