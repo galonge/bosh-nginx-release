@@ -46,3 +46,21 @@ properties:
   user_file:
     default: ''
     description: 'htpasswd file in the form user:password'
+  ssl_key:
+    default: ''
+    description: |
+      The SSL key, can be empty, should be in PEM format. Its location is
+      /var/vcap/jobs/nginx/etc/ssl.key.pem
+  ssl_chained_cert:
+    default: ''
+    description: |
+      This is the chained SSL certificate for the website; This is in PEM
+      format.  The topmost certificate should be the certificate for the
+      website itself.  (e.g. in the case of sslip.io, the certificate for
+      sslip.io). The second-from-top certificate should be the intermediate
+      certificate (e.g.  "COMODO RSA Domain Validation Secure Server CA"). If
+      there is another intermediate certificate, that should follow (e.g.
+      "COMODO RSA Certification Authority").  There is no reason to include the
+      root certificate, but there is no harm in including it either. It should
+      be the last certificate (bottom-most). Its location is
+      /var/vcap/jobs/nginx/etc/ssl_chained.crt.pem
