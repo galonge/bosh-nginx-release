@@ -40,8 +40,16 @@ Assuming you are in the bosh nginx directory cloned earlier, i.e. in the bosh-ng
 bosh -e {{env_alias}} -d nginx-deployment deploy examples/nginx-deployment.yml
 ```
 
-#### Testing
+#### Testing with Curl
 
+Open terminal/command prompt and type in the following curl command to test
+
+```bash 
+	curl -u admin http://10.244.0.2
+```
+when prompted for a password, type in `admin` without the quotes.
+
+### Testing with Browser
 Visit <http://10.244.0.2/> on your browser and you should see the nginx homescreen with a popup to authenticate:
 
 Default username and password is `admin`
