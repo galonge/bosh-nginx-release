@@ -39,9 +39,8 @@ instance_groups:
           keepalive_timeout  65;
           server_names_hash_bucket_size 64;
           server {
-            server_name _; # invalid value which will never trigger on a real hostname.
+            server_name localhost;
             listen *:80;
-            # FIXME: replace all occurrences of 'example.com' with your server's FQDN
             access_log /var/vcap/sys/log/nginx/example.com-access.log;
             error_log /var/vcap/sys/log/nginx/example.com-error.log;
             root /var/vcap/data/nginx/document_root;
@@ -60,7 +59,7 @@ instance_groups:
           mkdir -p $NGINX_DIR
           cd $NGINX_DIR
           cat > index.shtml <<EOF
-            <html><head><title>My new BOSH Release on Virtualbox IPv6</title>
+            <html><head><title>My new BOSH Release on Virtualbox </title>
             </head><body>
             <h2>Welcome to my BOSH's nginx Release</h2>
             <h2>
@@ -70,7 +69,6 @@ instance_groups:
             </body></html>
         EOF
         fi
-      #  admin:admin
       user_file: |
       admin:$apr1$7slUwyza$MhQ1tv3QTjNu2Y/DoM6ln0
 update:
