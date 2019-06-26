@@ -8,7 +8,6 @@ templates:
     post-start.erb: bin/post-start
     ssl_key.erb: etc/ssl.key.pem
     ssl_chained_cert.erb: etc/ssl_chained.crt.pem
-    user_file.erb: conf/htpasswd
 
 packages:
 - nginx
@@ -43,9 +42,6 @@ properties:
   post_start:
     default: '#!/bin/bash'
     description: 'A placeholder to to run steps after nginx has started'
-  user_file:
-    default: ''
-    description: 'htpasswd file in the form user:password'
   ssl_key:
     default: ''
     description: |
