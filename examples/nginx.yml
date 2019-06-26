@@ -47,14 +47,26 @@ instance_groups:
             index index.shtml;
 
             location / {
-                auth_basic "Restricted Area. Please Login";
-                auth_basic_user_file /var/vcap/jobs/nginx/conf/htpasswd;
+               
             }
+
+             auth_basic "Restricted Area. Please Login";
+             auth_basic_user_file /var/vcap/jobs/nginx/conf/htpasswd;
           }
         }
       pre_start: |
         #!/bin/bash -ex
         NGINX_DIR=/var/vcap/data/nginx/document_root
+        JOB_NAME=nginx
+        BASE_DIR=/var/vcap
+        JOB_DIR=$BASE_DIR/jobs/$JOB_NAME
+        CONFIG_DIR=$JOB_DIR/etc
+
+        USER=admin
+        PASS="((nginx_basic_auth_password))"
+
+        echo "${USER}:$(echo "${PASS}" | openssl passwd -apr1 -stdin)" > ${CONFIG_DIR}/htpasswd.conf
+
         if [ ! -d $NGINX_DIR ]; then
           mkdir -p $NGINX_DIR
           cd $NGINX_DIR
@@ -69,11 +81,14 @@ instance_groups:
             </body></html>
         EOF
         fi
-      # user_file: |
-      # admin:$apr1$7slUwyza$MhQ1tv3QTjNu2Y/DoM6ln0
+
 update:
   canaries: 1
   max_in_flight: 1
   serial: false
   canary_watch_time: 1000-60000
   update_watch_time: 1000-60000
+
+variables:
+- name: nginx_basic_auth_password
+  type: password
