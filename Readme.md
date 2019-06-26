@@ -29,7 +29,7 @@ There are two ways this release can be added to your bosh director.
   ```
 2. From Release Tarball (Located in the tarball directory)
   ```bash
-    bosh -e {{env_alias}} upload-release https://github.com/wayneskillz/bosh-nginx-release/tarball/nginx-deployment-1.13.1.tar.gz
+    bosh -e {{env_alias}} upload-release https://github.com/wayneskillz/bosh-nginx-release/raw/master/tarball/nginx-deployment-1.13.1.tar.gz
   ```
 
 #### Deploying the Nginx release
